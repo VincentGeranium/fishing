@@ -150,15 +150,15 @@ class AddFeedView: UIView {
         
         NSLayoutConstraint.activate([
             // 이미지
-            photoImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: margin * 5),
-            photoImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: margin * 2),
-            photoImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            photoImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: margin * 3),
+            photoImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: margin),
+            photoImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -margin),
             
-            containerView.topAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant: margin * 2),
-            containerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: margin * 2),
-            containerView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
+            containerView.topAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant: margin),
+            containerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: margin),
+            containerView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -margin),
             containerView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
-            containerView.heightAnchor.constraint(equalTo: photoImageView.heightAnchor),
+            containerView.heightAnchor.constraint(equalTo: photoImageView.heightAnchor, multiplier: 1.5),
             
             // 장소
             pointNameLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: margin),
@@ -202,8 +202,8 @@ class AddFeedView: UIView {
             lureNameLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             lureNameLabel.heightAnchor.constraint(equalTo: rodNameLabel.heightAnchor),
             
-            lureNameTextField.topAnchor.constraint(equalTo: rodNameLabel.bottomAnchor),
-            lureNameTextField.leadingAnchor.constraint(equalTo: lureNameLabel.trailingAnchor, constant: margin),
+            lureNameTextField.topAnchor.constraint(equalTo: rodNameLabel.bottomAnchor, constant: margin),
+            lureNameTextField.leadingAnchor.constraint(equalTo: lureNameLabel.trailingAnchor),
             lureNameTextField.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             lureNameTextField.centerYAnchor.constraint(equalTo: lureNameLabel.centerYAnchor),
             lureNameTextField.widthAnchor.constraint(equalTo: lureNameLabel.widthAnchor,

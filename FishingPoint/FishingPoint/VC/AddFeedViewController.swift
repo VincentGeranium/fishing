@@ -21,6 +21,7 @@ extension UIScrollView {
 
 class AddFeedViewController: UIViewController {
     
+    var isUp = false
     var db: Firestore!
     var oriImageData: Data!
     let feedDataManager = FeedDataManager.shard
@@ -194,20 +195,20 @@ class AddFeedViewController: UIViewController {
     private func addSubView() {
         view.addSubview(scroll)
         scroll.addSubview(addFeedView)
+        scroll.backgroundColor = .red
     }
     
     private func autoLayout() {
         let guide = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
             scroll.topAnchor.constraint(equalTo: guide.topAnchor),
-            scroll.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
-            scroll.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
+            scroll.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scroll.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scroll.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
             
             addFeedView.topAnchor.constraint(equalTo: scroll.topAnchor),
-            addFeedView.leadingAnchor.constraint(equalTo: scroll.leadingAnchor),
-            addFeedView.trailingAnchor.constraint(equalTo: scroll.trailingAnchor),
             addFeedView.bottomAnchor.constraint(equalTo: scroll.bottomAnchor),
+            addFeedView.widthAnchor.constraint(equalTo: guide.widthAnchor),
             ])
         
         autoHeight = addFeedView.bottomAnchor.constraint(equalTo: scroll.bottomAnchor)
@@ -244,11 +245,6 @@ extension AddFeedViewController: UIImagePickerControllerDelegate, UINavigationCo
             let imageData = resizeImage(image: selectedImage, targetSize: CGSize(width: view.frame.width, height: 300)).jpegData(compressionQuality: 0.8)
             oriImageData = imageData
             addFeedView.photoImageView.image = resizeImage(image: selectedImage, targetSize: CGSize(width: view.frame.width, height: 300))
-            
-            //            사진으로 찍을 경우 앨범에 저장하는 코드
-            //            if picker.sourceType == .camera {
-            //                UIImageWriteToSavedPhotosAlbum(selectedImage, nil, nil, nil)
-            //            }
         }
         picker.dismiss(animated: true, completion: nil)
     }
@@ -256,16 +252,24 @@ extension AddFeedViewController: UIImagePickerControllerDelegate, UINavigationCo
 
 extension AddFeedViewController: UITextFieldDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
-        autoHeight.constant -= 200
-        let bottomOffset = CGPoint(x: 0, y: scroll.contentSize.height - scroll.bounds.size.height + scroll.contentInset.bottom + 200)
-        scroll.setContentOffset(bottomOffset, animated: true)
+        if isUp {
+            
+        } else {
+            autoHeight.constant -= 200
+            let bottomOffset = CGPoint(x: 0, y: scroll.contentSize.height - scroll.bounds.size.height + scroll.contentInset.bottom + 200)
+            scroll.setContentOffset(bottomOffset, animated: true)
+            isUp.toggle()
+        }
         
         return true
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        autoHeight.constant += 200
-        textField.resignFirstResponder()
+        if isUp {
+            autoHeight.constant += 200
+            textField.resignFirstResponder()
+            isUp.toggle()
+        }
         return true
     }
 }

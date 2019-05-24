@@ -16,6 +16,7 @@ class FeedDataManager {
     
     var allFeedData: [FeedData] = []
     var allImageData: [StorageReference] = []
+    var ImageData: Data!
     
     var pointName: String?
 }

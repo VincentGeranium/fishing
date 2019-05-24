@@ -20,6 +20,8 @@ class MainTableViewCell: UITableViewCell {
     
     var imageCollection: StorageReference!
     
+    let feedDataManager = FeedDataManager.shard
+    
     weak var delegate: MainTableViewCellDelegate?
     
     let actionButton: UIButton = {
@@ -112,26 +114,25 @@ extension MainTableViewCell: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let collection = collectionView.dequeueReusableCell(withReuseIdentifier: MainCollectionViewCell.identifier, for: indexPath) as! MainCollectionViewCell
-        print("[Order Log] collectionView Item Called")
         if imageCollection == nil {
             print("[Log] Collection Image - nil")
         } else {
             // Firebase store Settings
             let storage = Storage.storage()
             let gsReference = storage.reference(forURL: "\(imageCollection!)")
-
+            print("[Log] Collection Image - \(imageCollection!)")
             gsReference.getData(maxSize: 1 * 1024 * 1024 * 1024) { data, error in
                 if let _ = error {
                     // Uh-oh, an error occurred!
                 } else {
                     // Data for "images/island.jpg" is returned
+                    print("[Log] Collection IndexPath - \(data!)")
                     collection.collectionImage.image = UIImage(data: data!)
-//                    let image = UIImage(data: data!)
                 }
             }
             
 //            collection.collectionImage.sd_setImage(with: imageCollection!)
-            print("[Log] Collection Image - \(imageCollection!)")
+            
         }
         return collection
     }

@@ -34,7 +34,7 @@ class MainViewController: UIViewController {
         getData()
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         allFeedData = feedDataManager.allFeedData
         allImageData = feedDataManager.allImageData
         mainFeedTable.reloadData()
@@ -58,7 +58,6 @@ class MainViewController: UIViewController {
                         reelName: document.get("Reel") as! String,
                         lureName: document.get("Lure") as! String
                     )
-                    
                     self.allFeedData.append(feedData)
                     self.feedDataManager.allFeedData.append(feedData)
                     
@@ -131,8 +130,8 @@ extension MainViewController: UITableViewDataSource {
         if allImageData.isEmpty {
             
         } else {
-            print("[Order Log] tableView Cell Called")
-            cell.imageCollection = allImageData[indexPath.row]
+            print("[Log] Table IndexPath - \(indexPath.row)")
+            cell.imageCollection = feedDataManager.allImageData[indexPath.row]
             cell.actionButton.tag = indexPath.row
             cell.mainContentsView.pointBtn.text = allFeedData[indexPath.row].pointName!
             cell.mainContentsView.rodName.text = allFeedData[indexPath.row].rodName!
