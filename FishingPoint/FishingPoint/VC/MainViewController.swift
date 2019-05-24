@@ -35,15 +35,15 @@ class MainViewController: UIViewController {
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        allFeedData = feedDataManager.allFeedData
-        allImageData = feedDataManager.allImageData
-        mainFeedTable.reloadData()
+        getData()
     }
     
     private func getData() {
         // 화면 구성
         allFeedData = []
         allImageData = []
+        feedDataManager.allFeedData = []
+        feedDataManager.allImageData = []
         
         db.collection("feeds").getDocuments() { (querySnapshot, err) in
             if let err = err {
@@ -119,6 +119,8 @@ class MainViewController: UIViewController {
 
 extension MainViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        print("[Log] FeedData Count : \(feedDataManager.allFeedData.count)")
+        print("[Log] ImageData Count : \(feedDataManager.allImageData.count)")
         return feedDataManager.allFeedData.count
         //        return allFeedData.count
     }
@@ -131,12 +133,13 @@ extension MainViewController: UITableViewDataSource {
             
         } else {
             print("[Log] Table IndexPath - \(indexPath.row)")
-            cell.imageCollection = feedDataManager.allImageData[indexPath.row]
+            
+            cell.collectionImage.sd_setImage(with: feedDataManager.allImageData[indexPath.row])
             cell.actionButton.tag = indexPath.row
-            cell.mainContentsView.pointBtn.text = allFeedData[indexPath.row].pointName!
-            cell.mainContentsView.rodName.text = allFeedData[indexPath.row].rodName!
-            cell.mainContentsView.reelName.text = allFeedData[indexPath.row].reelName!
-            cell.mainContentsView.lureName.text = allFeedData[indexPath.row].lureName!
+            cell.mainContentsView.pointBtn.text = feedDataManager.allFeedData[indexPath.row].pointName!
+            cell.mainContentsView.rodName.text = feedDataManager.allFeedData[indexPath.row].rodName!
+            cell.mainContentsView.reelName.text = feedDataManager.allFeedData[indexPath.row].reelName!
+            cell.mainContentsView.lureName.text = feedDataManager.allFeedData[indexPath.row].lureName!
         }
         return cell
     }

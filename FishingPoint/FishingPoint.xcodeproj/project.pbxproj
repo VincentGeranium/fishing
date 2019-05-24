@@ -22,7 +22,6 @@
 		CF390A3B22977DDC00648A85 /* FishingPointViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF390A3A22977DDC00648A85 /* FishingPointViewController.swift */; };
 		CF390A3D22977DE600648A85 /* AddFishingPointViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF390A3C22977DE600648A85 /* AddFishingPointViewController.swift */; };
 		CF390A3F22977DF700648A85 /* MainTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF390A3E22977DF700648A85 /* MainTableViewCell.swift */; };
-		CF390A4122977E0200648A85 /* MainCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CF390A4022977E0200648A85 /* MainCollectionViewCell.swift */; };
 		CF390A4322977EEF00648A85 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CF390A4222977EEF00648A85 /* GoogleService-Info.plist */; };
 /* End PBXBuildFile section */
 
@@ -45,7 +44,6 @@
 		CF390A3A22977DDC00648A85 /* FishingPointViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FishingPointViewController.swift; sourceTree = "<group>"; };
 		CF390A3C22977DE600648A85 /* AddFishingPointViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFishingPointViewController.swift; sourceTree = "<group>"; };
 		CF390A3E22977DF700648A85 /* MainTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTableViewCell.swift; sourceTree = "<group>"; };
-		CF390A4022977E0200648A85 /* MainCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewCell.swift; sourceTree = "<group>"; };
 		CF390A4222977EEF00648A85 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DCFE69742D9BB9C0537F9656 /* Pods_FishingPoint.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FishingPoint.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -156,7 +154,6 @@
 			isa = PBXGroup;
 			children = (
 				CF390A3E22977DF700648A85 /* MainTableViewCell.swift */,
-				CF390A4022977E0200648A85 /* MainCollectionViewCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -308,7 +305,6 @@
 				CF390A1622977C1200648A85 /* AppDelegate.swift in Sources */,
 				CF390A3D22977DE600648A85 /* AddFishingPointViewController.swift in Sources */,
 				CF390A3922977DBA00648A85 /* AddFeedViewController.swift in Sources */,
-				CF390A4122977E0200648A85 /* MainCollectionViewCell.swift in Sources */,
 				CF390A3522977D7C00648A85 /* MainContentsView.swift in Sources */,
 				CF390A3722977D9600648A85 /* AddFeedView.swift in Sources */,
 				CF390A3B22977DDC00648A85 /* FishingPointViewController.swift in Sources */,

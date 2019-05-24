@@ -135,7 +135,7 @@ extension AddFishingPointViewController: CLLocationManagerDelegate {
         let current = locations.last!
         
         if (abs(current.timestamp.timeIntervalSinceNow) < 10) {
-            let coordinate = current.coordinate
+            _ = current.coordinate
         }
         
         let coordinate = current.coordinate

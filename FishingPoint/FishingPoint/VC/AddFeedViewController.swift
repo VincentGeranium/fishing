@@ -105,7 +105,7 @@ class AddFeedViewController: UIViewController {
         let storage = Storage.storage()
         let storageRef = storage.reference()
         let imageRef = storageRef.child("images/\(date)")
-        feedDataManager.allImageData.insert(imageRef, at: 0)
+        //        feedDataManager.allImageData.insert(imageRef, at: 0)
         let uploadTask = imageRef.putData(oriImageData, metadata: nil) { (metadata, error) in
             
             self.db.collection("feeds").document("\(date)").setData([
@@ -116,16 +116,7 @@ class AddFeedViewController: UIViewController {
                 "Lure" : "\(self.addFeedView.lureNameTextField.text!)",
                 ])
             
-            self.feedDataManager.allFeedData.insert(FeedData(
-                feedImage: "\(date)",
-                pointName: "\(self.addFeedView.pointNameTextField.text!)",
-                rodName: "\(self.addFeedView.rodNameTextField.text!)",
-                reelName: "\(self.addFeedView.reelNameTextField.text!)",
-                lureName: "\(self.addFeedView.lureNameTextField.text!)"), at: 0)
-        }
-        
-        uploadTask.observe(.success) { snapshot in
-            if snapshot.progress!.isFinished {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                 HPGradientLoading.shared.dismiss()
                 self.navigationController?.popViewController(animated: true)
             }
@@ -195,7 +186,6 @@ class AddFeedViewController: UIViewController {
     private func addSubView() {
         view.addSubview(scroll)
         scroll.addSubview(addFeedView)
-        scroll.backgroundColor = .red
     }
     
     private func autoLayout() {

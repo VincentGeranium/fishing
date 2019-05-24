@@ -31,14 +31,10 @@ class MainTableViewCell: UITableViewCell {
         return actionButton
     }()
     
-    let collection: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        let collection = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collection.backgroundColor = .white
-        collection.translatesAutoresizingMaskIntoConstraints = false
-        collection.register(MainCollectionViewCell.self, forCellWithReuseIdentifier: MainCollectionViewCell.identifier)
-        return collection
+    let collectionImage: UIImageView = {
+        let collectionImage = UIImageView()
+        collectionImage.translatesAutoresizingMaskIntoConstraints = false
+        return collectionImage
     }()
     
     let mainContentsView: MainContentsView = {
@@ -60,16 +56,12 @@ class MainTableViewCell: UITableViewCell {
     }
     
     private func configure() {
-        collection.dataSource = self
-        collection.delegate = self
-        collection.isPagingEnabled = true
-        collection.showsHorizontalScrollIndicator = false
         actionButton.addTarget(self, action: #selector(moreButtonDidTap(_:)), for: .touchUpInside)
     }
     
     private func addContentView() {
         contentView.addSubview(actionButton)
-        contentView.addSubview(collection)
+        contentView.addSubview(collectionImage)
         contentView.addSubview(mainContentsView)
     }
     
@@ -81,81 +73,20 @@ class MainTableViewCell: UITableViewCell {
             actionButton.widthAnchor.constraint(equalToConstant: 20),
             actionButton.heightAnchor.constraint(equalToConstant: 20),
             
-            collection.topAnchor.constraint(equalTo: actionButton.bottomAnchor),
-            collection.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            collection.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            collection.heightAnchor.constraint(equalToConstant: 300),
+            collectionImage.topAnchor.constraint(equalTo: actionButton.bottomAnchor),
+            collectionImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            collectionImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            collectionImage.heightAnchor.constraint(equalToConstant: 300),
             
-            mainContentsView.topAnchor.constraint(equalTo: collection.bottomAnchor),
+            mainContentsView.topAnchor.constraint(equalTo: collectionImage.bottomAnchor),
             mainContentsView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: margin * 2),
             mainContentsView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -margin * 2),
             mainContentsView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -margin),
             ])
     }
     
-    
-    
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        
-        
-    }
-    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-}
-
-extension MainTableViewCell: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let collection = collectionView.dequeueReusableCell(withReuseIdentifier: MainCollectionViewCell.identifier, for: indexPath) as! MainCollectionViewCell
-        if imageCollection == nil {
-            print("[Log] Collection Image - nil")
-        } else {
-            // Firebase store Settings
-            let storage = Storage.storage()
-            let gsReference = storage.reference(forURL: "\(imageCollection!)")
-            print("[Log] Collection Image - \(imageCollection!)")
-            gsReference.getData(maxSize: 1 * 1024 * 1024 * 1024) { data, error in
-                if let _ = error {
-                    // Uh-oh, an error occurred!
-                } else {
-                    // Data for "images/island.jpg" is returned
-                    print("[Log] Collection IndexPath - \(data!)")
-                    collection.collectionImage.image = UIImage(data: data!)
-                }
-            }
-            
-//            collection.collectionImage.sd_setImage(with: imageCollection!)
-            
-        }
-        return collection
-    }
-}
-
-extension MainTableViewCell: UICollectionViewDelegateFlowLayout {
-    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: contentView.frame.width, height: collectionView.frame.height)
-    }
-    
-    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets{
-        
-        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-    }
-    
-    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat{
-        
-        return 0
-    }
-    
-    //셀 사이의 간격
-    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat{
-        
-        return 0
-    }
 }
