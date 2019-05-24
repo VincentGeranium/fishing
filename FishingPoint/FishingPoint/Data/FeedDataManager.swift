@@ -7,3 +7,14 @@
 //
 
 import Foundation
+import FirebaseUI
+
+class FeedDataManager {
+    static let shard = FeedDataManager()
+    
+    private init() {}
+    
+    var allFeedData: [FeedData]?
+    
+    var pointName: String?
+}
