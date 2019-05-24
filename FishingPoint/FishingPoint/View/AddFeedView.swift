@@ -151,12 +151,12 @@ class AddFeedView: UIView {
         NSLayoutConstraint.activate([
             // 이미지
             photoImageView.topAnchor.constraint(equalTo: self.topAnchor, constant: margin * 5),
-            photoImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: margin * 3),
-            photoImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: margin),
+            photoImageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: margin * 2),
+            photoImageView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             
             containerView.topAnchor.constraint(equalTo: photoImageView.bottomAnchor, constant: margin * 2),
-            containerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: margin * 3),
-            containerView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: margin),
+            containerView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: margin * 2),
+            containerView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             containerView.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             containerView.heightAnchor.constraint(equalTo: photoImageView.heightAnchor),
             
@@ -166,7 +166,7 @@ class AddFeedView: UIView {
             pointNameLabel.heightAnchor.constraint(equalToConstant: height),
             
             pointNameTextField.topAnchor.constraint(equalTo: containerView.topAnchor, constant: margin),
-            pointNameTextField.leadingAnchor.constraint(equalTo: pointNameLabel.trailingAnchor, constant: margin),
+            pointNameTextField.leadingAnchor.constraint(equalTo: pointNameLabel.trailingAnchor),
             pointNameTextField.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             pointNameTextField.centerYAnchor.constraint(equalTo: pointNameLabel.centerYAnchor),
             pointNameTextField.widthAnchor.constraint(equalTo: pointNameLabel.widthAnchor, multiplier: 6),
@@ -179,7 +179,7 @@ class AddFeedView: UIView {
             reelNameLabel.heightAnchor.constraint(equalTo: pointNameLabel.heightAnchor),
             
             reelNameTextField.topAnchor.constraint(equalTo: pointNameLabel.bottomAnchor, constant: margin),
-            reelNameTextField.leadingAnchor.constraint(equalTo: reelNameLabel.trailingAnchor, constant: margin),
+            reelNameTextField.leadingAnchor.constraint(equalTo: reelNameLabel.trailingAnchor),
             reelNameTextField.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             reelNameTextField.centerYAnchor.constraint(equalTo: reelNameLabel.centerYAnchor),
             reelNameTextField.widthAnchor.constraint(equalTo: reelNameLabel.widthAnchor, multiplier: 6),
@@ -191,7 +191,7 @@ class AddFeedView: UIView {
             rodNameLabel.heightAnchor.constraint(equalTo: reelNameLabel.heightAnchor),
             
             rodNameTextField.topAnchor.constraint(equalTo: reelNameLabel.bottomAnchor, constant: margin),
-            rodNameTextField.leadingAnchor.constraint(equalTo: rodNameLabel.trailingAnchor, constant: margin),
+            rodNameTextField.leadingAnchor.constraint(equalTo: rodNameLabel.trailingAnchor),
             rodNameTextField.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             rodNameTextField.centerYAnchor.constraint(equalTo: rodNameLabel.centerYAnchor),
             rodNameTextField.widthAnchor.constraint(equalTo: rodNameLabel.widthAnchor, multiplier: 6),
@@ -202,7 +202,7 @@ class AddFeedView: UIView {
             lureNameLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor),
             lureNameLabel.heightAnchor.constraint(equalTo: rodNameLabel.heightAnchor),
             
-            lureNameTextField.topAnchor.constraint(equalTo: rodNameLabel.bottomAnchor, constant: margin),
+            lureNameTextField.topAnchor.constraint(equalTo: rodNameLabel.bottomAnchor),
             lureNameTextField.leadingAnchor.constraint(equalTo: lureNameLabel.trailingAnchor, constant: margin),
             lureNameTextField.trailingAnchor.constraint(equalTo: containerView.trailingAnchor),
             lureNameTextField.centerYAnchor.constraint(equalTo: lureNameLabel.centerYAnchor),

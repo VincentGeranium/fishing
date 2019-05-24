@@ -20,7 +20,7 @@ class MainContentsView: UIView {
         let pointName = UILabel()
         pointName.translatesAutoresizingMaskIntoConstraints = false
         pointName.text = "장소"
-        pointName.font = UIFont.systemFont(ofSize: 20)
+        pointName.font = UIFont.boldSystemFont(ofSize: 20)
         pointName.textColor = .black
         
         return pointName
@@ -39,7 +39,7 @@ class MainContentsView: UIView {
         let reelName = UILabel()
         reelName.translatesAutoresizingMaskIntoConstraints = false
         reelName.text = "릴"
-        reelName.font = UIFont.systemFont(ofSize: 20)
+        reelName.font = UIFont.boldSystemFont(ofSize: 20)
         reelName.textColor = .black
         return reelName
     }()
@@ -57,7 +57,7 @@ class MainContentsView: UIView {
         let rodName = UILabel()
         rodName.translatesAutoresizingMaskIntoConstraints = false
         rodName.text = "로드"
-        rodName.font = UIFont.systemFont(ofSize: 20)
+        rodName.font = UIFont.boldSystemFont(ofSize: 20)
         rodName.textColor = .black
         return rodName
     }()
@@ -74,7 +74,7 @@ class MainContentsView: UIView {
         let lureName = UILabel()
         lureName.translatesAutoresizingMaskIntoConstraints = false
         lureName.text = "루어"
-        lureName.font = UIFont.systemFont(ofSize: 20)
+        lureName.font = UIFont.boldSystemFont(ofSize: 20)
         lureName.textColor = .black
         return lureName
     }()
@@ -89,7 +89,6 @@ class MainContentsView: UIView {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         configure()
         addSubContentView()
         autoLayout()

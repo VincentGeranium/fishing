@@ -76,21 +76,20 @@ class MainViewController: UIViewController {
         }
     }
     
+    @objc private func plusButtonDidTap(_ sender: UIButton) {
+        let addFeedVC = AddFeedViewController()
+        self.navigationController?.pushViewController(addFeedVC, animated: true)
+    }
+    
     private func tabBarSetting() {
         let naviTitleView = UIImageView(image: UIImage(named: AppImageData.logo))
         naviTitleView.contentMode = .scaleAspectFit
+        navigationController?.navigationBar.backgroundColor = UIColor(red: 0.36, green: 0.57, blue: 0.78, alpha: 1)
         self.navigationItem.titleView = naviTitleView
         
         self.navigationItem.setRightBarButton(UIBarButtonItem(image: UIImage(named: AppImageData.plus), style: .plain, target: self, action: #selector(plusButtonDidTap(_:))), animated: true)
         self.navigationItem.backBarButtonItem = UIBarButtonItem(title: nil, style: .plain, target: nil, action: nil)
         self.navigationItem.backBarButtonItem?.tintColor = .black
-    }
-    
-    
-    
-    @objc private func plusButtonDidTap(_ sender: UIButton) {
-        let addFeedVC = AddFeedViewController()
-        self.navigationController?.pushViewController(addFeedVC, animated: true)
     }
     
     private func configure() {
@@ -200,6 +199,6 @@ extension MainViewController: MainContentsViewDelegate {
     func presentMapView(_ pointName: String) {
         let fishingPointVC = FishingPointViewController()
         fishingPointVC.originAddress = pointName
-        present(fishingPointVC, animated: true)
+        navigationController?.pushViewController(fishingPointVC, animated: true)
     }
 }

@@ -116,11 +116,23 @@ extension MainTableViewCell: UICollectionViewDataSource {
         if imageCollection == nil {
             print("[Log] Collection Image - nil")
         } else {
-            collection.collectionImage.sd_setImage(with: imageCollection!)
+            // Firebase store Settings
+            let storage = Storage.storage()
+            let gsReference = storage.reference(forURL: "\(imageCollection!)")
+
+            gsReference.getData(maxSize: 1 * 1024 * 1024 * 1024) { data, error in
+                if let _ = error {
+                    // Uh-oh, an error occurred!
+                } else {
+                    // Data for "images/island.jpg" is returned
+                    collection.collectionImage.image = UIImage(data: data!)
+//                    let image = UIImage(data: data!)
+                }
+            }
+            
+//            collection.collectionImage.sd_setImage(with: imageCollection!)
             print("[Log] Collection Image - \(imageCollection!)")
         }
-        
-        
         return collection
     }
 }

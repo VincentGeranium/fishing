@@ -22,6 +22,7 @@ class FishingPointViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .white
+        self.title = "피싱 포인트"
         addSubView()
         autoLayout()
         searchMap(originAddress)
