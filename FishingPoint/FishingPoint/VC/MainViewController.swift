@@ -14,8 +14,6 @@ class MainViewController: UIViewController {
     
     private var db: Firestore!
     
-    var allFeedData: [FeedData] = []
-    var allImageData: [StorageReference] = []
     var feedDataManager = FeedDataManager.shard
     
     private let mainFeedTable: UITableView = {
@@ -31,7 +29,6 @@ class MainViewController: UIViewController {
         configure()
         addSubView()
         autoLayout()
-        getData()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -40,8 +37,6 @@ class MainViewController: UIViewController {
     
     private func getData() {
         // 화면 구성
-        allFeedData = []
-        allImageData = []
         feedDataManager.allFeedData = []
         feedDataManager.allImageData = []
         
@@ -58,7 +53,6 @@ class MainViewController: UIViewController {
                         reelName: document.get("Reel") as! String,
                         lureName: document.get("Lure") as! String
                     )
-                    self.allFeedData.append(feedData)
                     self.feedDataManager.allFeedData.append(feedData)
                     
                     // 이미지 다운로드
@@ -67,7 +61,6 @@ class MainViewController: UIViewController {
                     let storage = Storage.storage()
                     let storageRef = storage.reference()
                     let desertRef = storageRef.child("images/\(imageNmae)")
-                    self.allImageData.append(desertRef)
                     self.feedDataManager.allImageData.append(desertRef)
                 }
             }
@@ -122,14 +115,13 @@ extension MainViewController: UITableViewDataSource {
         print("[Log] FeedData Count : \(feedDataManager.allFeedData.count)")
         print("[Log] ImageData Count : \(feedDataManager.allImageData.count)")
         return feedDataManager.allFeedData.count
-        //        return allFeedData.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = mainFeedTable.dequeueReusableCell(withIdentifier: MainTableViewCell.identifier, for: indexPath) as! MainTableViewCell
         cell.delegate = self
         cell.mainContentsView.delegate = self
-        if allImageData.isEmpty {
+        if feedDataManager.allImageData.isEmpty {
             
         } else {
             print("[Log] Table IndexPath - \(indexPath.row)")
@@ -151,7 +143,28 @@ extension MainViewController: MainTableViewCellDelegate {
         print("alertActionSheet - num : ", num)
         let action = UIAlertController(title: "선택", message: nil, preferredStyle: .actionSheet)
         // 등록페이지로 가고, 등록페이지에 이미지, text들을 다 채워놓고, 네비게이션 타이틀을 수정으로 변경
-        let modify = UIAlertAction(title: "수정", style: .default)
+        let modify = UIAlertAction(title: "수정", style: .default) { _ in
+            self.db.collection("feeds").getDocuments() { (querySnapshot, err) in
+                if let err = err {
+                    print("Error getting documents: \(err)")
+                } else {
+                    let count = querySnapshot!.documents.count - 1
+                    
+                    let point = querySnapshot?.documents[count - num].get("Point") as! String
+                    let rod = querySnapshot?.documents[count - num].get("Rod") as! String
+                    let reel = querySnapshot?.documents[count - num].get("Reel") as! String
+                    let lure = querySnapshot?.documents[count - num].get("Lure") as! String
+                    
+                    let addFeedVC = AddFeedViewController()
+                    addFeedVC.addFeedView.pointNameTextField.text = point
+                    addFeedVC.addFeedView.rodNameTextField.text = rod
+                    addFeedVC.addFeedView.reelNameTextField.text = reel
+                    addFeedVC.addFeedView.lureNameTextField.text = lure
+                    
+                    self.navigationController?.pushViewController(addFeedVC, animated: true)
+                }
+            }
+        }
         
         let delete = UIAlertAction(title: "삭제", style: .destructive) { _ in
             self.db.collection("feeds").getDocuments() { (querySnapshot, err) in
@@ -159,8 +172,8 @@ extension MainViewController: MainTableViewCellDelegate {
                     print("Error getting documents: \(err)")
                 } else {
                     var i = 0
-                    for document in querySnapshot!.documents {
-                        if i == num {
+                    for document in (querySnapshot!.documents).reversed() {
+                        if num == i {
                             removeImageName = document.get("ImageName") as! String
                             self.db.collection("feeds").document("\(document.reference.documentID)").delete()
                             
@@ -182,11 +195,10 @@ extension MainViewController: MainTableViewCellDelegate {
                         i += 1
                     }
                     self.getData()
-                    self.mainFeedTable.reloadData()
                 }
             }
         }
-        // db 삭제 후 테이블 리로드
+        
         let cancel = UIAlertAction(title: "취소", style: .cancel)
         
         action.addAction(delete)
