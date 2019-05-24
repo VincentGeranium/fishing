@@ -29,7 +29,7 @@ class FishingPointViewController: UIViewController {
     
     private func goToAnnotation(_ originAddress: String, _ geoAddress: CLPlacemark) {
         // span, region 설정
-        let span = MKCoordinateSpan(latitudeDelta: 0.001, longitudeDelta: 0.001)
+        let span = MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003)
         let region = MKCoordinateRegion(center: geoAddress.location!.coordinate, span: span)
         
         // 위도, 경도 값 저장

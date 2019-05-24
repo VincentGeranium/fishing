@@ -9,7 +9,6 @@
 import UIKit
 
 protocol MainContentsViewDelegate: class {
-    // MapView를 띄우기 위한 Delegate
     func presentMapView(_ pointName: String) -> Void
 }
 
@@ -23,6 +22,7 @@ class MainContentsView: UIView {
         pointName.text = "장소"
         pointName.font = UIFont.systemFont(ofSize: 20)
         pointName.textColor = .black
+        
         return pointName
     }()
     
@@ -31,6 +31,7 @@ class MainContentsView: UIView {
         pointBtn.translatesAutoresizingMaskIntoConstraints = false
         pointBtn.font = UIFont.systemFont(ofSize: 20)
         pointBtn.textColor = #colorLiteral(red: 0.1764705926, green: 0.4980392158, blue: 0.7568627596, alpha: 1)
+        pointBtn.numberOfLines = 0
         return pointBtn
     }()
     
@@ -48,6 +49,7 @@ class MainContentsView: UIView {
         reelName.translatesAutoresizingMaskIntoConstraints = false
         reelName.font = UIFont.systemFont(ofSize: 20)
         reelName.textColor = .black
+        reelName.numberOfLines = 0
         return reelName
     }()
     
@@ -94,7 +96,6 @@ class MainContentsView: UIView {
     }
     
     private func configure() {
-        // point Label을 클릭하면 동작하도록 제스처 등록
         let singleTap = UITapGestureRecognizer(target: self, action: #selector(pointBtnDidTap(_:)))
         pointBtn.isUserInteractionEnabled = true
         pointBtn.addGestureRecognizer(singleTap)

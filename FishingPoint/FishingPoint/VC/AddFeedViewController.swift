@@ -11,12 +11,28 @@ import Firebase
 import MobileCoreServices
 import HPGradientLoading
 
+extension UIScrollView {
+    
+    func scrollToBottom() {
+        let bottomOffset = CGPoint(x: 0, y: contentSize.height - bounds.size.height + contentInset.bottom)
+        setContentOffset(bottomOffset, animated: true)
+    }
+}
+
 class AddFeedViewController: UIViewController {
     
     var db: Firestore!
     var oriImageData: Data!
     let feedDataManager = FeedDataManager.shard
     let imagePicker = UIImagePickerController()
+    
+    var autoHeight: NSLayoutConstraint!
+    
+    let scroll: UIScrollView = {
+        let scroll = UIScrollView()
+        scroll.translatesAutoresizingMaskIntoConstraints = false
+        return scroll
+    }()
     
     let addFeedView: AddFeedView = {
         let addFiedView = AddFeedView()
@@ -83,12 +99,12 @@ class AddFeedViewController: UIViewController {
     }
     
     private func saveData() {
-        let date = Date()
         HPGradientLoading.shared.showLoading(with: "저장중 ...")
+        let date = Date()
         let storage = Storage.storage()
         let storageRef = storage.reference()
         let imageRef = storageRef.child("images/\(date)")
-        
+        feedDataManager.allImageData.insert(imageRef, at: 0)
         let uploadTask = imageRef.putData(oriImageData, metadata: nil) { (metadata, error) in
             
             self.db.collection("feeds").document("\(date)").setData([
@@ -98,11 +114,17 @@ class AddFeedViewController: UIViewController {
                 "Reel" : "\(self.addFeedView.reelNameTextField.text!)",
                 "Lure" : "\(self.addFeedView.lureNameTextField.text!)",
                 ])
+            
+            self.feedDataManager.allFeedData.insert(FeedData(
+                feedImage: "\(date)",
+                pointName: "\(self.addFeedView.pointNameTextField.text!)",
+                rodName: "\(self.addFeedView.rodNameTextField.text!)",
+                reelName: "\(self.addFeedView.reelNameTextField.text!)",
+                lureName: "\(self.addFeedView.lureNameTextField.text!)"), at: 0)
         }
         
         uploadTask.observe(.success) { snapshot in
             if snapshot.progress!.isFinished {
-                print("[Log] 업로드 완료")
                 HPGradientLoading.shared.dismiss()
                 self.navigationController?.popViewController(animated: true)
             }
@@ -156,6 +178,12 @@ class AddFeedViewController: UIViewController {
         // AlertSheet 델리게이트
         addFeedView.delegate = self
         
+        // TextField 델리게이트
+        addFeedView.pointNameTextField.delegate = self
+        addFeedView.reelNameTextField.delegate = self
+        addFeedView.rodNameTextField.delegate = self
+        addFeedView.lureNameTextField.delegate = self
+        
         // Firebase store Settings
         let settings = FirestoreSettings()
         Firestore.firestore().settings = settings
@@ -164,17 +192,26 @@ class AddFeedViewController: UIViewController {
     }
     
     private func addSubView() {
-        view.addSubview(addFeedView)
+        view.addSubview(scroll)
+        scroll.addSubview(addFeedView)
     }
     
     private func autoLayout() {
         let guide = view.safeAreaLayoutGuide
         NSLayoutConstraint.activate([
-            addFeedView.topAnchor.constraint(equalTo: guide.topAnchor),
-            addFeedView.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
-            addFeedView.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
-            addFeedView.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
+            scroll.topAnchor.constraint(equalTo: guide.topAnchor),
+            scroll.leadingAnchor.constraint(equalTo: guide.leadingAnchor),
+            scroll.trailingAnchor.constraint(equalTo: guide.trailingAnchor),
+            scroll.bottomAnchor.constraint(equalTo: guide.bottomAnchor),
+            
+            addFeedView.topAnchor.constraint(equalTo: scroll.topAnchor),
+            addFeedView.leadingAnchor.constraint(equalTo: scroll.leadingAnchor),
+            addFeedView.trailingAnchor.constraint(equalTo: scroll.trailingAnchor),
+            addFeedView.bottomAnchor.constraint(equalTo: scroll.bottomAnchor),
             ])
+        
+        autoHeight = addFeedView.bottomAnchor.constraint(equalTo: scroll.bottomAnchor)
+        autoHeight.isActive = true
     }
 }
 
@@ -217,9 +254,17 @@ extension AddFeedViewController: UIImagePickerControllerDelegate, UINavigationCo
     }
 }
 
-// 키보드 내리기
 extension AddFeedViewController: UITextFieldDelegate {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        autoHeight.constant -= 200
+        let bottomOffset = CGPoint(x: 0, y: scroll.contentSize.height - scroll.bounds.size.height + scroll.contentInset.bottom + 200)
+        scroll.setContentOffset(bottomOffset, animated: true)
+        
+        return true
+    }
+    
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        autoHeight.constant += 200
         textField.resignFirstResponder()
         return true
     }
